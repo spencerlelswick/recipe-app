@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 
 const AppContext = React.createContext()
 const url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s='
 
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('margarita')
+  const [searchTerm, setSearchTerm] = useState('')
   const [cocktails, setCocktails] = useState([])
 
-  const fetchDrinks = async () => {
+  const fetchDrinks = useCallback(async () => {
     try {
       setLoading(true)
       const response = await fetch(`${url}${searchTerm}`)
@@ -35,7 +35,7 @@ const AppProvider = ({ children }) => {
     } catch (error) {
       setLoading(false)
     }
-  }
+  })
 
   useEffect(() => {
     fetchDrinks()
